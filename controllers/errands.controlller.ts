@@ -90,4 +90,37 @@ const loadDrone = async (req: Request, res: Response, next: NextFunction) => {
   }
 };
 
-export { loadDrone };
+//* GET MEDICATIONS LOADED ON DRONE
+const droneMedications = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  const { serialNumber } = req.body;
+
+  try {
+    //* CHECK IF DRONE EXISTS
+    let droneExists = await droneService.checkForDrone(serialNumber);
+
+    if (!droneExists) {
+      return res.status(400).send({
+        statusCode: 400,
+        statusMessage: "Drone Does Not exist",
+      });
+    }
+
+    const medications = await errandsService.getMedicationsOnDrone(
+      serialNumber
+    );
+    // console.table(medications)
+    return res.status(200).send({
+      statusCode: 200,
+      statusMessage: "Drone Fetched",
+      data: medications,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export { loadDrone, droneMedications };

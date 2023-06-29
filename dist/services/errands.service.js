@@ -31,7 +31,7 @@ const errandsService = {
         return __awaiter(this, void 0, void 0, function* () {
             return yield prisma_1.default.errands.findFirst({
                 where: {
-                    serialNumber,
+                    drone: serialNumber,
                     state: "LOADED" || "DELIVERING",
                 },
                 select: {

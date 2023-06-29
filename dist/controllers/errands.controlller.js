@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.loadDrone = void 0;
+exports.droneMedications = exports.loadDrone = void 0;
 const drone_service_1 = __importDefault(require("../services/drone.service"));
 const errands_service_1 = __importDefault(require("../services/errands.service"));
 const medication_service_1 = __importDefault(require("../services/medication.service"));
@@ -88,3 +88,28 @@ const loadDrone = (req, res, next) => __awaiter(void 0, void 0, void 0, function
     }
 });
 exports.loadDrone = loadDrone;
+//* GET MEDICATIONS LOADED ON DRONE
+const droneMedications = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    const { serialNumber } = req.body;
+    try {
+        //* CHECK IF DRONE EXISTS
+        let droneExists = yield drone_service_1.default.checkForDrone(serialNumber);
+        if (!droneExists) {
+            return res.status(400).send({
+                statusCode: 400,
+                statusMessage: "Drone Does Not exist",
+            });
+        }
+        const medications = yield errands_service_1.default.getMedicationsOnDrone(serialNumber);
+        // console.table(medications)
+        return res.status(200).send({
+            statusCode: 200,
+            statusMessage: "Drone Fetched",
+            data: medications,
+        });
+    }
+    catch (error) {
+        next(error);
+    }
+});
+exports.droneMedications = droneMedications;

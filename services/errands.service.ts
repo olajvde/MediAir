@@ -17,7 +17,7 @@ const errandsService = {
   async getMedicationsOnDrone(serialNumber: string) {
     return await prisma.errands.findFirst({
       where: {
-        serialNumber,
+        drone: serialNumber,
         state: "LOADED" || "DELIVERING",
       },
       select: {
