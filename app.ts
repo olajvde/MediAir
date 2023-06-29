@@ -2,12 +2,21 @@ import express, { Express, Request, Response, NextFunction } from "express";
 
 import dotenv from "dotenv";
 import logger from "morgan";
-
+import prisma from "./middlewares/prisma";
 const app: Express = express();
 
 //* DEClaRE PORT
-const PORT = process.env.port || 3000;
-dotenv.config()
+const PORT = process.env.port || 3008;
+dotenv.config();
+
+prisma
+  .$connect()
+  .then(() => console.log("Connected to database..."))
+  .catch((error: Error) => {
+    console.error(`Error connecting to database: ${error.message}`);
+    process.exit(1);
+  });
+
 //ERROR HANDLING MIDDLEWARE
 const errorHandler = (
   err: Error,
