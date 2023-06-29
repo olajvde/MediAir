@@ -18,10 +18,12 @@ const droneService = {
     registerDrone(serialNumber, model, weight, battery) {
         return __awaiter(this, void 0, void 0, function* () {
             const newDrone = yield prisma_1.default.drone.create({
-                serialNumber,
-                model,
-                weight,
-                battery,
+                data: {
+                    serialNumber,
+                    model,
+                    weight,
+                    battery,
+                },
             });
             return newDrone;
         });

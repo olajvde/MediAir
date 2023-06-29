@@ -11,10 +11,12 @@ const droneService = {
     battery: number
   ) {
     const newDrone = await prisma.drone.create({
-      serialNumber,
-      model,
-      weight,
-      battery,
+      data: {
+        serialNumber,
+        model,
+        weight,
+        battery,
+      },
     });
 
     return newDrone;

@@ -7,8 +7,9 @@ const express_1 = __importDefault(require("express"));
 const dotenv_1 = __importDefault(require("dotenv"));
 const morgan_1 = __importDefault(require("morgan"));
 const prisma_1 = __importDefault(require("./middlewares/prisma"));
+const drone_routes_1 = __importDefault(require("./routes/drone.routes"));
 const app = (0, express_1.default)();
-//* DEClaRE PORT
+//* DEClARE PORT
 const PORT = process.env.port || 3008;
 dotenv_1.default.config();
 prisma_1.default
@@ -16,7 +17,8 @@ prisma_1.default
     .then(() => console.log("Connected to database..."))
     .catch((error) => {
     console.error(`Error connecting to database: ${error.message}`);
-    process.exit(1);
+    //* PM2 RESTARTS APP ON EXIT
+    // process.exit(1);
 });
 //ERROR HANDLING MIDDLEWARE
 const errorHandler = (err, req, res, next) => {
@@ -33,6 +35,8 @@ app.use((0, morgan_1.default)("dev"));
 app.use(express_1.default.json());
 app.use(express_1.default.urlencoded({ extended: false }));
 app.use(errorHandler);
+//* USE ROUTES
+app.use('/drone', drone_routes_1.default);
 app.listen(PORT, () => {
     console.log("listening on port");
 });
