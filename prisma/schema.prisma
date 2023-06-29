@@ -7,8 +7,10 @@ generator client {
 
 datasource db {
   provider = "mysql"
-  url      = env("DATABASE_URL")
+    url      = env("DATABASE_URL")
+  // shadowDatabaseUrl = env("SHADOW_DATABASE_URL")
 }
+
 
 model Drone {
   id           Int    @id @default(autoincrement())
@@ -17,7 +19,7 @@ model Drone {
   model        model
   weight       Int
   battery      Int
-  state        state
+  state        state @default(IDLE)
 }
 
 model Medication {
@@ -29,6 +31,15 @@ model Medication {
   image  String
 }
 
+
+model DroneWelfareLog {
+  id     Int    @id @default(autoincrement())
+  uuid   String @unique @default(uuid())
+  Drone String
+  state  state
+  batteryCapacity Int
+
+}
 enum state {
   IDLE
   LOADING
