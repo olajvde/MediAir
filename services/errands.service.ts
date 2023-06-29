@@ -8,7 +8,7 @@ const errandsService = {
       data: {
         drone: serialNumber,
         medications,
-        weight
+        weight,
       },
     });
   },

@@ -31,7 +31,7 @@ app.use(errorHandler_1.errorHandler);
 //* USE ROUTES
 app.use("/drone", drone_routes_1.default);
 app.use("/medication", medication_routes_1.default);
-app.use('/errands', errands_routes_1.default);
+app.use("/errands", errands_routes_1.default);
 app.listen(PORT, () => {
     console.log("listening on port");
 });
