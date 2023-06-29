@@ -3,10 +3,9 @@ import express, { Express, Request, Response, NextFunction } from "express";
 import dotenv from "dotenv";
 import logger from "morgan";
 import prisma from "./middlewares/prisma";
-import droneRouter from './routes/drone.routes'
-
-
-
+import droneRouter from "./routes/drone.routes";
+import medicationRouter from './routes/medication.routes'
+import { errorHandler } from "./utils/errorHandler";
 
 const app: Express = express();
 
@@ -19,28 +18,10 @@ prisma
   .then(() => console.log("Connected to database..."))
   .catch((error: Error) => {
     console.error(`Error connecting to database: ${error.message}`);
-   
-   //* PM2 RESTARTS APP ON EXIT
+
+    //* PM2 RESTARTS APP ON EXIT
     // process.exit(1);
   });
-
-//ERROR HANDLING MIDDLEWARE
-const errorHandler = (
-  err: Error,
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
-  // Handle the error
-  console.error(err.message);
-
-
-  return res.status(500).send({
-    statusCode: 500,
-    statusMessage: "Something went wrong",
-    data: err.message,
-  });
-};
 
 //* MIDDLEWARES
 
@@ -50,7 +31,8 @@ app.use(express.urlencoded({ extended: false }));
 app.use(errorHandler);
 
 //* USE ROUTES
-app.use('/drone', droneRouter)
+app.use("/drone", droneRouter);
+app.use('/medication', medicationRouter)
 
 app.listen(PORT, () => {
   console.log("listening on port");

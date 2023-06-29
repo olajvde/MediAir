@@ -27,7 +27,7 @@ model Medication {
   uuid   String @unique @default(uuid())
   name   String
   weight Int
-  code   String
+  code   String @unique
   image  String
 }
 

@@ -12,13 +12,12 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.registerDrone = void 0;
+exports.addMedication = void 0;
 const inputValidation_1 = require("../utils/inputValidation");
-const drone_service_1 = __importDefault(require("../services/drone.service"));
-const registerDrone = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    // Validate req.body against the schema
+const medication_service_1 = __importDefault(require("../services/medication.service"));
+const addMedication = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const { error, value } = inputValidation_1.droneRegistration.validate(req.body);
+        const { error, value } = inputValidation_1.registerMedication.validate(req.body);
         if (error) {
             // Respond with validation error if input is invalid
             return res.status(400).send({
@@ -28,22 +27,20 @@ const registerDrone = (req, res, next) => __awaiter(void 0, void 0, void 0, func
             });
         }
         else {
-            // Process the validated data if input is valid
-            // ...
-            const { serialNumber, model, weight, batteryCapacity } = value;
-            let droneExists = yield drone_service_1.default.checkForDrone(serialNumber);
-            if (droneExists) {
+            const { name, code, weight, image } = value;
+            let medicationExists = yield medication_service_1.default.checkForMedication(code);
+            if (medicationExists) {
                 return res.status(400).send({
                     statusCode: 400,
-                    statusMessage: "Drone already exists",
+                    statusMessage: "Medication already exists",
                 });
             }
-            yield drone_service_1.default
-                .registerDrone(serialNumber, model, weight, batteryCapacity)
+            yield medication_service_1.default
+                .createMedication(name, code, weight, image)
                 .then((_response) => {
                 return res.status(201).send({
                     statusCode: 201,
-                    statusMessage: "Drone Registered",
+                    statusMessage: "Medication Registered",
                 });
             })
                 .catch((error) => {
@@ -55,4 +52,4 @@ const registerDrone = (req, res, next) => __awaiter(void 0, void 0, void 0, func
         next(error);
     }
 });
-exports.registerDrone = registerDrone;
+exports.addMedication = addMedication;

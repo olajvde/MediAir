@@ -14,6 +14,16 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const prisma_1 = __importDefault(require("../middlewares/prisma"));
 const droneService = {
+    //* CHECK FOR EXISTING DRONE BY SERIAL NUMBER
+    checkForDrone(serialNumber) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return yield prisma_1.default.drone.findFirst({
+                where: {
+                    serialNumber: serialNumber
+                }
+            });
+        });
+    },
     //* REGISTER DRONE
     registerDrone(serialNumber, model, weight, battery) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -22,7 +32,7 @@ const droneService = {
                     serialNumber,
                     model,
                     weight,
-                    battery,
+                    battery
                 },
             });
             return newDrone;

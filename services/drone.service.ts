@@ -1,12 +1,19 @@
-import { model } from "@prisma/client";
 import prisma from "../middlewares/prisma";
 
 const droneService = {
 
+  //* CHECK FOR EXISTING DRONE BY SERIAL NUMBER
+  async checkForDrone(serialNumber: string){
+    return await prisma.drone.findFirst({
+      where:{
+        serialNumber: serialNumber
+      }
+    })
+  },
     //* REGISTER DRONE
   async registerDrone(
     serialNumber: string,
-    model: model,
+    model: string,
     weight: number,
     battery: number
   ) {
@@ -15,7 +22,7 @@ const droneService = {
         serialNumber,
         model,
         weight,
-        battery,
+        battery
       },
     });
 

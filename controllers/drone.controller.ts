@@ -21,11 +21,24 @@ const registerDrone = async (
     } else {
       // Process the validated data if input is valid
       // ...
-      const { serialNumber, model, weight, batteryCapacity } = req.body;
+      const { serialNumber, model, weight, batteryCapacity } = value;
+
+      let droneExists = await droneService.checkForDrone(serialNumber);
+
+      if (droneExists) {
+        return res.status(400).send({
+          statusCode: 400,
+          statusMessage: "Drone already exists",
+        });
+      }
+
       await droneService
         .registerDrone(serialNumber, model, weight, batteryCapacity)
-        .then((response) => {
-          res.send(response);
+        .then((_response) => {
+          return res.status(201).send({
+            statusCode: 201,
+            statusMessage: "Drone Registered",
+          });
         })
         .catch((error) => {
           next(error);
