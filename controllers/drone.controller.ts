@@ -49,4 +49,62 @@ const registerDrone = async (
   }
 };
 
-export { registerDrone };
+//* GET AVAILABLE DRONES
+const availableDrones = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    await droneService
+      .getAvailableDrones()
+      .then((response) => {
+        return res.status(200).send({
+          statusCode: 200,
+          statusMessage: "Available Drones",
+          data: response,
+        });
+      })
+      .catch((error) => {
+        next(error);
+      });
+  } catch (error) {
+    next(error);
+  }
+};
+
+//* CHECK BATTERY LEVEL OF A DRONE
+const batteryLevel = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  const { serialNumber } = req.body;
+  try {
+    let droneExists = await droneService.checkForDrone(serialNumber);
+
+    if (!droneExists) {
+      return res.status(400).send({
+        statusCode: 400,
+        statusMessage: "Drone does not exist",
+      });
+    }
+
+    await droneService
+      .checkBatteryLevel(serialNumber)
+      .then((response) => {
+        return res.status(200).send({
+          statusCode: 200,
+          statusMessage: "Available Drones",
+          data: response,
+        });
+      })
+      .catch((error) => {
+        next(error);
+      });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export { registerDrone, availableDrones, batteryLevel };

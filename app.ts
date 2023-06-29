@@ -4,7 +4,7 @@ import dotenv from "dotenv";
 import logger from "morgan";
 import prisma from "./middlewares/prisma";
 import droneRouter from "./routes/drone.routes";
-import medicationRouter from './routes/medication.routes'
+import medicationRouter from "./routes/medication.routes";
 import { errorHandler } from "./utils/errorHandler";
 
 const app: Express = express();
@@ -32,7 +32,7 @@ app.use(errorHandler);
 
 //* USE ROUTES
 app.use("/drone", droneRouter);
-app.use('/medication', medicationRouter)
+app.use("/medication", medicationRouter);
 
 app.listen(PORT, () => {
   console.log("listening on port");

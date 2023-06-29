@@ -29,7 +29,7 @@ app.use(express_1.default.urlencoded({ extended: false }));
 app.use(errorHandler_1.errorHandler);
 //* USE ROUTES
 app.use("/drone", drone_routes_1.default);
-app.use('/medication', medication_routes_1.default);
+app.use("/medication", medication_routes_1.default);
 app.listen(PORT, () => {
     console.log("listening on port");
 });

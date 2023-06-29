@@ -19,8 +19,8 @@ const droneService = {
         return __awaiter(this, void 0, void 0, function* () {
             return yield prisma_1.default.drone.findFirst({
                 where: {
-                    serialNumber: serialNumber
-                }
+                    serialNumber: serialNumber,
+                },
             });
         });
     },
@@ -32,10 +32,33 @@ const droneService = {
                     serialNumber,
                     model,
                     weight,
-                    battery
+                    battery,
                 },
             });
             return newDrone;
+        });
+    },
+    //* GET AVAILABLE DRONES FOR LOADING
+    getAvailableDrones() {
+        return __awaiter(this, void 0, void 0, function* () {
+            return yield prisma_1.default.drone.findMany({
+                where: {
+                    state: "IDLE" || "DELIVERED" || "RETURNING",
+                },
+            });
+        });
+    },
+    //* CHECK BATTERY LEVEL OF DRONE
+    checkBatteryLevel(serialNumber) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return yield prisma_1.default.drone.findFirst({
+                where: {
+                    serialNumber,
+                },
+                select: {
+                    battery: true,
+                },
+            });
         });
     },
 };

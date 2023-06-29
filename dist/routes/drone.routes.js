@@ -7,4 +7,6 @@ const express_1 = __importDefault(require("express"));
 const drone_controller_1 = require("../controllers/drone.controller");
 const router = express_1.default.Router();
 router.post("/register", drone_controller_1.registerDrone);
+router.get("/available-drones", drone_controller_1.availableDrones);
+router.post("/check-battery", drone_controller_1.batteryLevel);
 exports.default = router;

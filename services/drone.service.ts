@@ -1,16 +1,15 @@
 import prisma from "../middlewares/prisma";
 
 const droneService = {
-
   //* CHECK FOR EXISTING DRONE BY SERIAL NUMBER
-  async checkForDrone(serialNumber: string){
+  async checkForDrone(serialNumber: string) {
     return await prisma.drone.findFirst({
-      where:{
-        serialNumber: serialNumber
-      }
-    })
+      where: {
+        serialNumber: serialNumber,
+      },
+    });
   },
-    //* REGISTER DRONE
+  //* REGISTER DRONE
   async registerDrone(
     serialNumber: string,
     model: string,
@@ -22,11 +21,32 @@ const droneService = {
         serialNumber,
         model,
         weight,
-        battery
+        battery,
       },
     });
 
     return newDrone;
+  },
+
+  //* GET AVAILABLE DRONES FOR LOADING
+  async getAvailableDrones() {
+    return await prisma.drone.findMany({
+      where: {
+        state: "IDLE" || "DELIVERED" || "RETURNING",
+      },
+    });
+  },
+
+  //* CHECK BATTERY LEVEL OF DRONE
+  async checkBatteryLevel(serialNumber: string) {
+    return await prisma.drone.findFirst({
+      where: {
+        serialNumber,
+      },
+      select: {
+        battery: true,
+      },
+    });
   },
 };
 

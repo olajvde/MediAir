@@ -7,10 +7,9 @@ generator client {
 
 datasource db {
   provider = "mysql"
-    url      = env("DATABASE_URL")
+  url      = env("DATABASE_URL")
   // shadowDatabaseUrl = env("SHADOW_DATABASE_URL")
 }
-
 
 model Drone {
   id           Int    @id @default(autoincrement())
@@ -20,6 +19,8 @@ model Drone {
   weight       Int
   battery      Int
   state        String @default("IDLE")
+  createdAt             DateTime @default(now()) @map("created_at")
+  updatedAt             DateTime @updatedAt @map("updated_at")
 }
 
 model Medication {
@@ -29,14 +30,26 @@ model Medication {
   weight Int
   code   String @unique
   image  String
+  createdAt             DateTime @default(now()) @map("created_at")
+  updatedAt             DateTime @updatedAt @map("updated_at")
 }
 
+model Errands {
+  id         Int    @id @default(autoincrement())
+  uuid       String @unique @default(uuid())
+  drone      String
+  medications Json
+  state String
+  createdAt             DateTime @default(now()) @map("created_at")
+  updatedAt             DateTime @updatedAt @map("updated_at")
+}
 
 model DroneWelfareLog {
-  id     Int    @id @default(autoincrement())
-  uuid   String @unique @default(uuid())
-  Drone String
-  state  String
+  id              Int    @id @default(autoincrement())
+  uuid            String @unique @default(uuid())
+  Drone           String
+  state           String
   batteryCapacity Int
-
+  createdAt             DateTime @default(now()) @map("created_at")
+  updatedAt             DateTime @updatedAt @map("updated_at")
 }

@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.registerDrone = void 0;
+exports.batteryLevel = exports.availableDrones = exports.registerDrone = void 0;
 const inputValidation_1 = require("../utils/inputValidation");
 const drone_service_1 = __importDefault(require("../services/drone.service"));
 const registerDrone = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
@@ -56,3 +56,53 @@ const registerDrone = (req, res, next) => __awaiter(void 0, void 0, void 0, func
     }
 });
 exports.registerDrone = registerDrone;
+//* GET AVAILABLE DRONES
+const availableDrones = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        yield drone_service_1.default
+            .getAvailableDrones()
+            .then((response) => {
+            return res.status(200).send({
+                statusCode: 200,
+                statusMessage: "Available Drones",
+                data: response,
+            });
+        })
+            .catch((error) => {
+            next(error);
+        });
+    }
+    catch (error) {
+        next(error);
+    }
+});
+exports.availableDrones = availableDrones;
+//* CHECK BATTERY LEVEL OF A DRONE
+const batteryLevel = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    const { serialNumber } = req.body;
+    try {
+        let droneExists = yield drone_service_1.default.checkForDrone(serialNumber);
+        if (!droneExists) {
+            return res.status(400).send({
+                statusCode: 400,
+                statusMessage: "Drone does not exist",
+            });
+        }
+        yield drone_service_1.default
+            .checkBatteryLevel(serialNumber)
+            .then((response) => {
+            return res.status(200).send({
+                statusCode: 200,
+                statusMessage: "Available Drones",
+                data: response,
+            });
+        })
+            .catch((error) => {
+            next(error);
+        });
+    }
+    catch (error) {
+        next(error);
+    }
+});
+exports.batteryLevel = batteryLevel;
