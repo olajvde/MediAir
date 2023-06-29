@@ -9,6 +9,7 @@ const morgan_1 = __importDefault(require("morgan"));
 const prisma_1 = __importDefault(require("./middlewares/prisma"));
 const drone_routes_1 = __importDefault(require("./routes/drone.routes"));
 const medication_routes_1 = __importDefault(require("./routes/medication.routes"));
+const errands_routes_1 = __importDefault(require("./routes/errands.routes"));
 const errorHandler_1 = require("./utils/errorHandler");
 const app = (0, express_1.default)();
 //* DEClARE PORT
@@ -30,6 +31,7 @@ app.use(errorHandler_1.errorHandler);
 //* USE ROUTES
 app.use("/drone", drone_routes_1.default);
 app.use("/medication", medication_routes_1.default);
+app.use('/errands', errands_routes_1.default);
 app.listen(PORT, () => {
     console.log("listening on port");
 });

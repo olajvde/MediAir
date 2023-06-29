@@ -61,5 +61,18 @@ const droneService = {
             });
         });
     },
+    //* UPDATE STATE OF DRONE
+    updateDrone(serialNumber) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return yield prisma_1.default.drone.update({
+                where: {
+                    serialNumber: serialNumber,
+                },
+                data: {
+                    state: "LOADED"
+                }
+            });
+        });
+    }
 };
 exports.default = droneService;

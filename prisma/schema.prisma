@@ -12,44 +12,45 @@ datasource db {
 }
 
 model Drone {
-  id           Int    @id @default(autoincrement())
-  uuid         String @unique @default(uuid())
-  serialNumber String @unique @db.VarChar(100)
+  id           Int      @id @default(autoincrement())
+  uuid         String   @unique @default(uuid())
+  serialNumber String   @unique @db.VarChar(100)
   model        String
   weight       Int
   battery      Int
-  state        String @default("IDLE")
-  createdAt             DateTime @default(now()) @map("created_at")
-  updatedAt             DateTime @updatedAt @map("updated_at")
+  state        String   @default("IDLE")
+  createdAt    DateTime @default(now()) @map("created_at")
+  updatedAt    DateTime @default(now()) @updatedAt @map("updated_at")
 }
 
 model Medication {
-  id     Int    @id @default(autoincrement())
-  uuid   String @unique @default(uuid())
-  name   String
-  weight Int
-  code   String @unique
-  image  String
-  createdAt             DateTime @default(now()) @map("created_at")
-  updatedAt             DateTime @updatedAt @map("updated_at")
+  id        Int      @id @default(autoincrement())
+  uuid      String   @unique @default(uuid())
+  name      String
+  weight    Int
+  code      String   @unique
+  image     String
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @default(now()) @updatedAt @map("updated_at")
 }
 
 model Errands {
-  id         Int    @id @default(autoincrement())
-  uuid       String @unique @default(uuid())
-  drone      String
+  id          Int      @id @default(autoincrement())
+  uuid        String   @unique @default(uuid())
+  drone       String
   medications Json
-  state String
-  createdAt             DateTime @default(now()) @map("created_at")
-  updatedAt             DateTime @updatedAt @map("updated_at")
+  state       String   @default("LOADED")
+  weight      Int
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @default(now()) @updatedAt @map("updated_at")
 }
 
 model DroneWelfareLog {
-  id              Int    @id @default(autoincrement())
-  uuid            String @unique @default(uuid())
+  id              Int      @id @default(autoincrement())
+  uuid            String   @unique @default(uuid())
   Drone           String
   state           String
   batteryCapacity Int
-  createdAt             DateTime @default(now()) @map("created_at")
-  updatedAt             DateTime @updatedAt @map("updated_at")
+  createdAt       DateTime @default(now()) @map("created_at")
+  updatedAt       DateTime @default(now()) @updatedAt @map("updated_at")
 }

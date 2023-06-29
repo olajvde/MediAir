@@ -48,6 +48,18 @@ const droneService = {
       },
     });
   },
+
+  //* UPDATE STATE OF DRONE
+  async updateDrone(serialNumber: string){
+    return await prisma.drone.update({
+      where:{
+        serialNumber: serialNumber,
+      },
+      data:{
+        state: "LOADED"
+      }
+    })
+  }
 };
 
 export default droneService;
