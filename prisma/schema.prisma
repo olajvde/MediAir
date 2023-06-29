@@ -1,0 +1,46 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Drone {
+  id           Int    @id @default(autoincrement())
+  uuid         String @unique @default(uuid())
+  serialNumber String @unique @db.VarChar(100)
+  model        model
+  weight       Int
+  battery      Int
+  state        state
+}
+
+model Medication {
+  id     Int    @id @default(autoincrement())
+  uuid   String @unique @default(uuid())
+  name   String
+  weight Int
+  code   String
+  image  String
+}
+
+enum state {
+  IDLE
+  LOADING
+  LOADED
+  DELIVERING
+  DELIVERED
+  RETURNING
+}
+
+enum model {
+  Lightweight
+  Middleweight
+  Cruiseweight
+  Heavyweight
+}
